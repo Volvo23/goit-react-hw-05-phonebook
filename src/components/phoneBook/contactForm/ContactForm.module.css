@@ -1,0 +1,31 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  max-width: 500px;
+  padding: 10px;
+  border: 1px solid #111;
+}
+.label {
+  display: flex;
+  flex-direction: column;
+  font-weight: 500;
+}
+.input {
+  margin: 5px 0;
+  width: 50%;
+  border: 1px solid #111;
+}
+.input:focus {
+  outline: none;
+  border: 1px solid #a0c7f9;
+}
+.button {
+  background-color: inherit;
+  margin-top: 10px;
+  width: 25%;
+  border-radius: 7px;
+  outline: none;
+}
+.button:active {
+  background-color: #a0c7f9;
+}

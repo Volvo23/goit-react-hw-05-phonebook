@@ -1,0 +1,7 @@
+.input {
+  border: 1px solid #111;
+}
+.input:focus {
+  outline: none;
+  border: 1px solid #a0c7f9;
+}

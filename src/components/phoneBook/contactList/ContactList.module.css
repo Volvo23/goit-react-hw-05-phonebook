@@ -1,0 +1,18 @@
+.list {
+  max-width: 500px;
+}
+.listItem + .listItem {
+  margin-top: 10px;
+}
+.button {
+  margin-left: 20px;
+  background-color: inherit;
+  border-radius: 7px;
+  outline: none;
+}
+.button:active {
+  background-color: #a0c7f9;
+}
+.name {
+  font-weight: 500;
+}
