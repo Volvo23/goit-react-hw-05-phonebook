@@ -16,3 +16,20 @@
 .name {
   font-weight: 500;
 }
+.enter {
+  transform: translateX(-100%);
+}
+
+.enterActive {
+  transition: all 250ms linear;
+  transform: translateX(0);
+}
+
+.exit {
+  transform: translateX(0);
+}
+
+.exitActive {
+  transition: all 250ms linear;
+  transform: translateX(-100%);
+}

@@ -3,6 +3,10 @@ import ContactForm from "./contactForm/ContactForm";
 import { v4 as uuidv4 } from "uuid";
 import ContactList from "./contactList/ContactList";
 import ContactFilter from "./contactFilter/ContactFilter";
+import { CSSTransition } from "react-transition-group";
+import s from "./PhoneBook.module.css";
+import Notification from "./notification/Notofication";
+import Insert from "./insert/Insert";
 
 class PhoneBook extends Component {
   state = {
@@ -30,22 +34,31 @@ class PhoneBook extends Component {
     }
   }
 
-  addContact = (newContacts) => {
+  addContact = ({ name, number }) => {
+    const { contacts } = this.state;
     const contact = {
       id: uuidv4(),
-      name: newContacts.name,
-      number: newContacts.number,
+      name,
+      number,
     };
 
+    if (contacts.find((el) => el.name.toLowerCase() === name.toLowerCase())) {
+      this.setState({ newContact: contact.name, showAlert: true });
+      setTimeout(
+        () => this.setState({ newContact: null, showAlert: false }),
+        2500
+      );
+      return;
+    }
+    if (!name.length || !number.length) {
+      this.setState({ showInsert: true });
+      setTimeout(() => this.setState({ showInsert: false }), 2500);
+      return;
+    }
     this.setState((prevState) => {
-      return prevState.contacts.find(
-        (contact) =>
-          contact.name.toLowerCase() === newContacts.name.toLowerCase()
-      )
-        ? alert(`${newContacts.name} is already in contacts.`)
-        : {
-            contacts: [...prevState.contacts, contact],
-          };
+      return {
+        contacts: [...prevState.contacts, contact],
+      };
     });
   };
 
@@ -68,18 +81,42 @@ class PhoneBook extends Component {
   };
 
   render() {
+    const { newContact, showAlert, showInsert } = this.state;
     return (
       <div>
-        <h1>Phonebook</h1>
+        <CSSTransition in={true} appear={true} timeout={500} classNames={s}>
+          <h1 className={s.title}>Phonebook</h1>
+        </CSSTransition>
         <ContactForm addContact={this.addContact} />
-        <ContactFilter
-          filter={this.state.filter}
-          onHandleFilter={this.onHandleFilter}
-        />
+        {this.state.contacts.length > 0 && (
+          <ContactFilter
+            filter={this.state.filter}
+            onHandleFilter={this.onHandleFilter}
+          />
+        )}
         <ContactList
           contacts={this.getFiltredContacts()}
           deleteContact={this.deleteContact}
         />
+        <CSSTransition
+          in={showInsert}
+          appear={true}
+          timeout={250}
+          classNames={s}
+          unmountOnExit
+        >
+          <Insert />
+        </CSSTransition>
+
+        <CSSTransition
+          in={showAlert}
+          appear={true}
+          timeout={250}
+          classNames={s}
+          unmountOnExit
+        >
+          <Notification name={newContact} />
+        </CSSTransition>
       </div>
     );
   }
